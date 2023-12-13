@@ -37,12 +37,15 @@ def main_get():
     return report
 
 
-@app.rout('/insert')
+@app.rout('/insert', methods=['POST', 'GET'])
 def insert():
     db = db_connection()
     cursor = db.cursor(pymysql.cursors.DictCursor)
+    now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    if request.method == 'POST':
+        form = request.form
 
-    query = 'INSERT INTO mumbles () VALUES ()'
+    query = 'INSERT INTO mumbles (mumble, user, timestamp) VALUES ({form.mumbles}, {form.user}, {now})'
     cursor.excute(query)
     db.commit()
     db.close()
